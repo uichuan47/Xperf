@@ -25,8 +25,9 @@ async def main():
     runner = TaskRunner()
     from Task.EnergyTestTask import EnergyTestTask
     runner.add_task(1, 5,EnergyTestTask.start_game)
-    runner.add_task(2, 10,EnergyTestTask.cmd_1)
-    runner.add_task(3, 15,EnergyTestTask.cmd_2)
+    runner.add_task(2, 1,EnergyTestTask.nocar)
+    runner.add_task(3, 1,EnergyTestTask.nonpc)
+    runner.add_task(4, 1,EnergyTestTask.cmd_3)
 
     # Tick operation
     periodic_op = PeriodicOperation(0.3)
