@@ -4,8 +4,6 @@ from datetime import datetime
 from typing import List, Any
 from Task.BaseTask import LongTask,PeriodicOperation
 
-
-
 class TaskRunner:
 
     def __init__(self):
@@ -30,14 +28,13 @@ async def main():
     runner.add_task(2, 10)
     runner.add_task(3, 15)
 
-    # 创建定期操作
+    # Tick operation
     periodic_op = PeriodicOperation(0.3)
     periodic_task = periodic_op.start()
 
     try:
         # 顺序执行所有任务
         results = await runner.run_sequential()
-        print("所有任务完成！结果:", results)
     finally:
         # cancel tick
         periodic_op.cancel()
