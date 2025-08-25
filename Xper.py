@@ -10,8 +10,8 @@ class TaskRunner:
         self.tasks: List[LongTask] = []
         self.results: List[Any] = []
 
-    def add_task(self, task_id: int, duration: float):
-        self.tasks.append(LongTask(task_id, duration))
+    def add_task(self, task_id: int, duration: float,action):
+        self.tasks.append(LongTask(task_id, duration,action))
 
     async def run_sequential(self):
         self.results = []
@@ -22,11 +22,11 @@ class TaskRunner:
 
 
 async def main():
-    # 创建任务运行器
     runner = TaskRunner()
-    runner.add_task(1, 5)
-    runner.add_task(2, 10)
-    runner.add_task(3, 15)
+    from Task.EnergyTestTask import EnergyTestTask
+    runner.add_task(1, 5,EnergyTestTask.start_game)
+    runner.add_task(2, 10,EnergyTestTask.cmd_1)
+    runner.add_task(3, 15,EnergyTestTask.cmd_2)
 
     # Tick operation
     periodic_op = PeriodicOperation(0.3)

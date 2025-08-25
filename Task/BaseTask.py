@@ -5,14 +5,16 @@ from loguru import logger
 from typing import List, Any
 
 class LongTask:
-    def __init__(self, task_id: int, duration: float):
+    def __init__(self, task_id: int, duration: float,action):
         self.task_id = task_id
         self.duration = duration
         self.start_time = None
         self.end_time = None
+        self.action = action
 
     async def execute(self) -> str:
         print(f"task {self.task_id} begin duration {self.duration} seconds")
+        await self.action()
         await asyncio.sleep(self.duration)
         return f"task{self.task_id} done"
 
@@ -28,7 +30,7 @@ class PeriodicOperation:
         while True:
             current_time = time.time()
             elapsed = current_time - self.start_time
-            logger.info(f"elapsed_time:{elapsed:.2f}")
+            logger.info(f"elapsed_time:{elapsed:.2f} tick")
             await asyncio.sleep(self.interval)
 
     def start(self):
