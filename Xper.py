@@ -1,59 +1,50 @@
 import asyncio
 import time
 from datetime import datetime
+from typing import List, Any
+from Task.BaseTask import LongTask,PeriodicOperation
 
 
-async def long_task(task_id, duration):
-    """耗时任务"""
-    print(f"任务 {task_id} 开始执行，耗时 {duration} 秒")
-    start_time = time.time()
 
-    # 模拟任务执行（使用 asyncio.sleep 而不是 time.sleep）
-    await asyncio.sleep(duration)
+class TaskRunner:
 
-    end_time = time.time()
-    print(f"任务 {task_id} 完成 耗时 {end_time - start_time:.2f} 秒")
-    return f"任务 {task_id} 结果"
+    def __init__(self):
+        self.tasks: List[LongTask] = []
+        self.results: List[Any] = []
 
+    def add_task(self, task_id: int, duration: float):
+        self.tasks.append(LongTask(task_id, duration))
 
-async def periodic_operation(interval=0.3):
-    start_time = time.time()
-    operation_count = 0
-
-    while True:
-        operation_count += 1
-        current_time = time.time()
-        elapsed = current_time - start_time
-
-        # 执行定期操作（这里只是打印信息）
-        print(f"[{datetime.now().strftime('%H:%M:%S.%f')}] "
-              f"定期操作 #{operation_count}, 已运行 {elapsed:.2f} 秒")
-
-        # 等待指定的间隔时间
-        await asyncio.sleep(interval)
-
-
-async def run_sequential_tasks():
-    results = []
-    results.append(await long_task(1, 5))
-    results.append(await long_task(2, 10))
-    results.append(await long_task(3, 15))
-    return results
+    async def run_sequential(self):
+        self.results = []
+        for task in self.tasks:
+            result = await task.execute()
+            self.results.append(result)
+        return self.results
 
 
 async def main():
-    # Tick Task
-    periodic_task = asyncio.create_task(periodic_operation(0.3))
+    # 创建任务运行器
+    runner = TaskRunner()
+    runner.add_task(1, 5)
+    runner.add_task(2, 10)
+    runner.add_task(3, 15)
+
+    # 创建定期操作
+    periodic_op = PeriodicOperation(0.3)
+    periodic_task = periodic_op.start()
 
     try:
-        results = await run_sequential_tasks()
-        print(results)
+        # 顺序执行所有任务
+        results = await runner.run_sequential()
+        print("所有任务完成！结果:", results)
     finally:
-        periodic_task.cancel()
+        # cancel tick
+        periodic_op.cancel()
         try:
             await periodic_task
         except asyncio.CancelledError:
-            print("定期操作已停止")
+            print("stop tick")
 
 
 if __name__ == "__main__":
