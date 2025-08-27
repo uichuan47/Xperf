@@ -359,7 +359,7 @@ def print_final_summary(stats: Dict[str, Any], summary: Dict[str, Any]):
 
 def main():
     """主函数"""
-    csv_file_path = r"C:\Users\75251\Documents\pxx\pxx\kento_work\kento_work\utrace\Trace\example.csv"
+    csv_file_path = r"UE55Timer.csv"
     json_file_path = "frame_trees.json"
 
     # 处理选项
