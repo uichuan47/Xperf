@@ -3,10 +3,10 @@ import json
 import time
 import gc
 from typing import Dict, Any, Optional, Iterator
-from Trace.Processor.TreeNode import TreeNode
-from Trace.Processor.DefaultProcessors import DefaultNodeProcessor, DefaultFrameProcessor, DefaultTimerNameProcessor
-from Trace.Processor.BaseProcessors import ITimerNameProcessor, INodeProcessor, IFrameProcessor
-from Trace.Processor.PerformanceTracker import PerformanceTracker
+from Processor.TreeNode import TreeNode
+from Processor.DefaultProcessors import DefaultNodeProcessor, DefaultFrameProcessor, DefaultTimerNameProcessor
+from Processor.BaseProcessors import ITimerNameProcessor, INodeProcessor, IFrameProcessor
+from Processor.PerformanceTracker import PerformanceTracker
 
 class CustomTimerNameProcessor(ITimerNameProcessor):
     """自定义TimerName处理器示例"""

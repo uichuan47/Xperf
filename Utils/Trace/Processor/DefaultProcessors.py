@@ -34,7 +34,7 @@ class DefaultTimerNameProcessor(ITimerNameProcessor):
         # for pattern, replacement in self.cleanup_patterns:
         #     processed_name = re.sub(pattern, replacement, processed_name)
         if processed_name == '':
-            processed_name = "FrameKento"
+            processed_name = "Frame"
         return processed_name
 
     def extract_metadata(self, timer_name: str, timer_id: int) -> Dict[str, Any]:
