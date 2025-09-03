@@ -28,6 +28,7 @@ async def main():
     runner.add_task(2, 1,EnergyTestTask.nocar)
     runner.add_task(3, 1,EnergyTestTask.nonpc)
     runner.add_task(4, 1,EnergyTestTask.cmd_3)
+    runner.add_task(4, 1,EnergyTestTask.start_power_record)
 
     # Tick operation
     periodic_op = PeriodicOperation(0.3)
