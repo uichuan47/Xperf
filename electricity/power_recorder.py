@@ -135,20 +135,6 @@ class PowerRecorder(CoroutineParallel):
         return PowerRecorder.__power_recorder_instances.get(power_id, None)
 
 
-def send_data_to_ue(data):
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    server_address = ('192.168.148.180', 27779)
-    client_socket.connect(server_address)
-
-    try:
-        client_socket.sendall(data.encode('utf-8'))
-
-        response = client_socket.recv(1024)
-        print(f"recive : {response.decode('utf-8')}")
-
-    finally:
-        client_socket.close()
 
 def save_data_to_excel(data_list, file_path):
     # 将数据转换为 pandas DataFrame
@@ -157,33 +143,6 @@ def save_data_to_excel(data_list, file_path):
     # 保存数据到 Excel 文件
     df.to_excel(file_path, index=False)
 
-    # # 生成可视化图表
-    # plt.figure(figsize=(10, 6))
-    # sns.set(style="whitegrid")
-    #
-    # # 画出电流值随时间变化的折线图
-    # sns.lineplot(x='time', y='current', hue='tag', data=df, marker='o')
-    #
-    # # 设置图表标题和标签
-    # plt.title('Current Over Time')
-    # plt.xlabel('Time')
-    # plt.ylabel('Current (A)')
-    # plt.legend(title='Tag', loc='upper left')
-    #
-    # # 保存图表到 Excel 文件的同一个目录中
-    # chart_path = file_path.replace('.xlsx', '_chart.png')
-    # plt.savefig(chart_path)
-    #
-    # plt.show()
-
-
-async def a_main():
-    recorder = PowerRecorder(KA3003PPower.get_all_connected_power()[0])
-    await recorder.start_record(0.3)
-    await asyncio.sleep(3)
-    await recorder.stop_record()
-    logger.debug(recorder.get_data(1.0))
-
 
 async def power_test():
     # 初始化功耗记录器
@@ -191,27 +150,6 @@ async def power_test():
 
     # 开启功耗打点
     await recorder.start_record(0.3)
-
-    # 与客户端建立一个tcp长连接
-    # client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # server_address = ('192.168.148.180', 27777)
-    # client_socket.connect(server_address)
-    #
-    # # 发起任务
-    #
-    #
-    # # 测试过程需要保证与客户端的长连接，直到收到停止游戏的消息
-    # while True:
-    #     response = client_socket.recv(1024)
-    #     if response:
-    #         response_data = response.decode('utf-8')
-    #         if response_data == "autotest_end":
-    #             break
-    #         else:
-    #             logger.debug(f"recive power tag : {response_data}")
-    #
-    # logger.debug("power test end")
-
     await asyncio.sleep(180)
     await recorder.stop_record()
 
